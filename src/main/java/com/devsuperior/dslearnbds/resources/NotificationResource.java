@@ -20,7 +20,6 @@ public class NotificationResource {
 	
 	@GetMapping
 	public ResponseEntity<Page<NotificationDTO>> notificationsForCurrentUser(Pageable pageable) {
-		
 		Page<NotificationDTO> page = notificationService.notificationsForCurrentUser(pageable);		
 		return ResponseEntity.ok().body(page);
 	}
