@@ -13,7 +13,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.devsuperior.dslearnbds.enums.DeliverStatus;
+import com.devsuperior.dslearnbds.entities.enums.DeliverStatus;
 
 @Entity
 @Table(name = "tb_deliver")

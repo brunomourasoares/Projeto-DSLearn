@@ -19,27 +19,31 @@ import com.devsuperior.dslearnbds.services.exceptions.ResourceNotFoundException;
 @Service
 public class UserService implements UserDetailsService {
 
-	final static Logger logger = LoggerFactory.getLogger(UserService.class);
+	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserRepository repository;
+	
+	@Autowired
+	private AuthService authService;
+	
+	@Transactional(readOnly = true)
+	public UserDTO findById(Long id) {
+		authService.validateSelfOrAdmin(id);
+		Optional<User> obj = repository.findById(id);
+		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+		return new UserDTO(entity);
+	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		User user = userRepository.findByEmail(username);
+		User user = repository.findByEmail(username);
 		if (user == null) {
 			logger.error("User not found: " + username);
 			throw new UsernameNotFoundException("Email not found");
 		}
 		logger.info("User found: " + username);
 		return user;
-	}
-
-	@Transactional(readOnly = true)
-	public UserDTO findById(Long id) {
-		Optional<User> obj = userRepository.findById(id);
-		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		return new UserDTO(entity);
 	}
 }

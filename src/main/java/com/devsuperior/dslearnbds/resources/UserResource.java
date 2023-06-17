@@ -13,11 +13,11 @@ import com.devsuperior.dslearnbds.services.UserService;
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
-    
-    @Autowired
-	private UserService userService;
 
-    @GetMapping(value = "/{id}")
+	@Autowired
+	private UserService userService;
+	
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		UserDTO dto = userService.findById(id);
 		return ResponseEntity.ok().body(dto);
